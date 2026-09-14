@@ -1,6 +1,6 @@
 /**
  * Main Application Controller (Appy Don VIP Birthday Extravaganza)
- * Complete 6-Scene Progression with Endless Looping Guitar Video & Low-Volume Justin Bieber MP3.
+ * Complete 5-Scene Progression with Endless Looping Guitar Video & Low-Volume Justin Bieber MP3.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,13 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const localBieberAudio = document.getElementById('local-bieber-audio');
   const guitarVideo = document.getElementById('guitar-video');
 
-  // Scenes
+  // Scenes (5-Scene Streamlined Progression)
   const scene1 = document.getElementById('scene-1');
   const scene2 = document.getElementById('scene-2');
   const scene3 = document.getElementById('scene-3');
   const scene4 = document.getElementById('scene-4');
   const scene5 = document.getElementById('scene-5');
-  const scene6 = document.getElementById('scene-6');
 
   // Scene 1 Elements
   const btnScene1Next = document.getElementById('btn-scene-1-next');
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const vibeBarFill = document.getElementById('vibe-bar-fill');
   const btnScene2Next = document.getElementById('btn-scene-2-next');
 
-  // Scene 3 Elements (Cake)
+  // Scene 3 Elements (Cake with Dancing Cats & Cheeky Wish Tease)
   const candleHeaderText = document.getElementById('candle-header-text');
   const countdownDisplay = document.getElementById('countdown-display');
   const actionPrompt = document.getElementById('action-prompt');
@@ -38,18 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const candleFlame = document.getElementById('candle-flame');
   const smokePuff = document.getElementById('smoke-puff');
   const sliceGuide = document.getElementById('slice-guide');
+  const cheekyWishBubble = document.getElementById('cheeky-wish-bubble');
   const cakeSliceDisplay = document.getElementById('cake-slice-display');
   const btnScene3Next = document.getElementById('btn-scene-3-next');
 
-  // Scene 4 Elements (Shooting Star)
-  const shootingStar = document.getElementById('shooting-star');
-  const shootingStar2 = document.getElementById('shooting-star-2');
-  const btnWishLocked = document.getElementById('btn-wish-locked');
-  const btnReWish = document.getElementById('btn-re-wish');
-  const cheekyBubble = document.getElementById('cheeky-bubble');
-  const btnScene4Next = document.getElementById('btn-scene-4-next');
-
-  // Scene 5 Elements (Party Games: Quiz + Scratch Card)
+  // Scene 4 Elements (Party Games: Quiz + Scratch Card)
   const partyQuizContainer = document.getElementById('party-quiz-container');
   const quizCounter = document.getElementById('quiz-counter');
   const quizQuestionText = document.getElementById('quiz-question-text');
@@ -67,9 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const partyScratchContainer = document.getElementById('party-scratch-container');
   const scratchCanvas = document.getElementById('scratch-canvas');
   const scratchRevealedMsg = document.getElementById('scratch-revealed-msg');
-  const btnScene5Next = document.getElementById('btn-scene-5-next');
+  const btnScene4Next = document.getElementById('btn-scene-4-next');
 
-  // Scene 6 Elements (Finale)
+  // Scene 5 Elements (The Anonymous Mystery Finale)
   const decryptProgress = document.getElementById('decrypt-progress');
   const progressStatus = document.getElementById('progress-status');
   const error404Banner = document.getElementById('error-404-banner');
@@ -83,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let countdownValue = 7;
   let isCandleBlown = false;
   let isCakeSliced = false;
-  let shootingStarInterval = null;
   let isBieberPlaying = false;
   let isScratchCompleted = false;
   let concertTimer = null;
@@ -204,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Helper: Switch active scene
   function showScene(sceneNumber) {
-    [scene1, scene2, scene3, scene4, scene5, scene6].forEach((sc) => {
+    [scene1, scene2, scene3, scene4, scene5].forEach((sc) => {
       if (sc) sc.classList.remove('active');
     });
 
@@ -212,14 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetScene) targetScene.classList.add('active');
 
     currentScene = sceneNumber;
-
-    // Body background theme (Scene 4 is starry night-mode)
-    if (sceneNumber === 4) {
-      document.body.classList.add('night-mode');
-    } else {
-      document.body.classList.remove('night-mode');
-    }
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -326,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (candleFlame) candleFlame.style.display = 'block';
     if (smokePuff) smokePuff.classList.remove('puffed');
     if (sliceGuide) sliceGuide.classList.remove('visible');
+    if (cheekyWishBubble) cheekyWishBubble.classList.remove('show');
     if (cakeSliceDisplay) cakeSliceDisplay.classList.remove('show');
     if (btnScene3Next) btnScene3Next.style.display = 'none';
 
@@ -354,16 +338,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   }
 
-  // Blowing out the candle
+  // Blowing out the candle (With Cheeky Wish Tease)
   function handleBlowCandle() {
     if (countdownValue > 0 || isCandleBlown) return;
 
     isCandleBlown = true;
     window.soundFX.playBlow();
+    window.soundFX.playTwinkle();
     if (candleFlame) candleFlame.style.display = 'none';
     if (smokePuff) smokePuff.classList.add('puffed');
 
-    if (actionPromptText) actionPromptText.textContent = 'SWIPE or CLICK the cake to slice it! 🍰';
+    // Show cheeky wish tease immediately right under the cake!
+    if (cheekyWishBubble) {
+      cheekyWishBubble.classList.add('show');
+    }
+
+    if (actionPromptText) actionPromptText.textContent = 'Now SWIPE or CLICK to slice your cake! 🍰✂️';
 
     if (window.confettiEngine) {
       window.confettiEngine.blast({
@@ -429,87 +419,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 
-  // Scene 3 -> Scene 4 (Shooting star)
+  // Scene 3 -> Scene 4 (Party Cards & Games)
   if (btnScene3Next) {
     btnScene3Next.addEventListener('click', () => {
       window.soundFX.playPop(1.1);
       showScene(4);
-      triggerShootingStar();
-    });
-  }
-
-  // ==========================================
-  // SCENE 4: SLOWER SHOOTING STAR & FLIRTY WISH
-  // ==========================================
-  function triggerShootingStar() {
-    [shootingStar, shootingStar2].forEach(star => {
-      if (!star) return;
-      star.classList.remove('animate');
-      void star.offsetWidth;
-      star.classList.add('animate');
-    });
-    window.soundFX.playTwinkle();
-
-    clearInterval(shootingStarInterval);
-    shootingStarInterval = setInterval(() => {
-      if (currentScene === 4) {
-        [shootingStar, shootingStar2].forEach(star => {
-          if (!star) return;
-          star.classList.remove('animate');
-          void star.offsetWidth;
-          star.classList.add('animate');
-        });
-        window.soundFX.playTwinkle();
-      }
-    }, 7500);
-  }
-
-  if (btnReWish) {
-    btnReWish.addEventListener('click', () => {
-      triggerShootingStar();
-      if (window.confettiEngine) {
-        window.confettiEngine.blast({
-          particleCount: 20,
-          spread: 60,
-          origin: { x: 0.5, y: 0.4 },
-          shapes: ['star']
-        });
-      }
-    });
-  }
-
-  if (btnWishLocked) {
-    btnWishLocked.addEventListener('click', () => {
-      window.soundFX.playPop(1.2);
-      window.soundFX.playChime(1318.51);
-
-      if (window.confettiEngine) {
-        window.confettiEngine.blast({
-          particleCount: 40,
-          spread: 80,
-          origin: { x: 0.5, y: 0.65 },
-          shapes: ['star', 'heart']
-        });
-      }
-
-      btnWishLocked.style.display = 'none';
-      if (btnReWish) btnReWish.style.display = 'none';
-      if (cheekyBubble) cheekyBubble.classList.add('show');
-    });
-  }
-
-  // Scene 4 -> Scene 5 (Party Cards & Games)
-  if (btnScene4Next) {
-    btnScene4Next.addEventListener('click', () => {
-      window.soundFX.playPop(1.2);
-      clearInterval(shootingStarInterval);
-      showScene(5);
       initPartyGames();
     });
   }
 
   // ==========================================
-  // SCENE 5: PARTY CARDS & GAMES (QUIZ + SCRATCH CARD)
+  // SCENE 4: PARTY CARDS & GAMES (QUIZ + SCRATCH CARD)
   // ==========================================
   const quizData = [
     {
@@ -546,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function initPartyGames() {
     if (partyQuizContainer) partyQuizContainer.style.display = 'block';
     if (partyScratchContainer) partyScratchContainer.style.display = 'none';
-    if (btnScene5Next) btnScene5Next.style.display = 'none';
+    if (btnScene4Next) btnScene4Next.style.display = 'none';
     currentQuestionIndex = 0;
     renderQuestion(0);
   }
@@ -703,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
           isScratchCompleted = true;
           ctx.clearRect(0, 0, w, h);
           if (scratchRevealedMsg) scratchRevealedMsg.style.display = 'block';
-          if (btnScene5Next) btnScene5Next.style.display = 'inline-flex';
+          if (btnScene4Next) btnScene4Next.style.display = 'inline-flex';
 
           window.soundFX.playFanfare();
           if (window.confettiEngine) {
@@ -741,17 +661,17 @@ document.addEventListener('DOMContentLoaded', () => {
     scratchCanvas.ontouchend = () => { isDrawing = false; };
   }
 
-  // Scene 5 -> Scene 6 (Finale)
-  if (btnScene5Next) {
-    btnScene5Next.addEventListener('click', () => {
+  // Scene 4 -> Scene 5 (Finale)
+  if (btnScene4Next) {
+    btnScene4Next.addEventListener('click', () => {
       window.soundFX.playPop(1.1);
-      showScene(6);
+      showScene(5);
       startHackerDecryption();
     });
   }
 
   // ==========================================
-  // SCENE 6: DECRYPTION PROGRESS & GRAND REVEAL
+  // SCENE 5: DECRYPTION PROGRESS & GRAND REVEAL
   // ==========================================
   function startHackerDecryption() {
     if (decryptProgress) decryptProgress.style.width = '0%';
@@ -802,9 +722,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnReplay) {
     btnReplay.addEventListener('click', () => {
       window.soundFX.playPop(1);
-      if (btnWishLocked) btnWishLocked.style.display = 'inline-flex';
-      if (btnReWish) btnReWish.style.display = 'inline-flex';
-      if (cheekyBubble) cheekyBubble.classList.remove('show');
       showScene(1);
     });
   }
@@ -852,10 +769,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const requestedScene = parseInt(urlParams.get('scene'), 10);
   const stateParam = urlParams.get('state');
-  const wishedParam = urlParams.get('wished');
   const revealParam = urlParams.get('reveal');
 
-  if (requestedScene >= 1 && requestedScene <= 6) {
+  if (requestedScene >= 1 && requestedScene <= 5) {
     showScene(requestedScene);
 
     if (requestedScene === 2) {
@@ -879,6 +795,19 @@ document.addEventListener('DOMContentLoaded', () => {
           actionPrompt.style.display = 'inline-flex';
           if (actionPromptText) actionPromptText.textContent = 'TAP the candle to blow it out! 🌬️';
         }
+      } else if (stateParam === 'blown') {
+        countdownValue = 0;
+        isCandleBlown = true;
+        if (candleHeaderText) candleHeaderText.textContent = 'Make your birthday wish, Appy Don! ✨';
+        if (countdownDisplay) countdownDisplay.style.display = 'none';
+        if (candleFlame) candleFlame.style.display = 'none';
+        if (smokePuff) smokePuff.classList.add('puffed');
+        if (actionPrompt) {
+          actionPrompt.style.display = 'inline-flex';
+          if (actionPromptText) actionPromptText.textContent = 'Now SWIPE or CLICK to slice your cake! 🍰✂️';
+        }
+        if (cheekyWishBubble) cheekyWishBubble.classList.add('show');
+        if (sliceGuide) sliceGuide.classList.add('visible');
       } else if (stateParam === 'sliced') {
         countdownValue = 0;
         isCandleBlown = true;
@@ -886,22 +815,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (candleHeaderText) candleHeaderText.textContent = 'Woohoo! Happy Birthday Superstar! 🥳✨';
         if (countdownDisplay) countdownDisplay.style.display = 'none';
         if (candleFlame) candleFlame.style.display = 'none';
+        if (smokePuff) smokePuff.classList.add('puffed');
         if (actionPrompt) actionPrompt.style.display = 'none';
+        if (cheekyWishBubble) cheekyWishBubble.classList.add('show');
         if (cakeSliceDisplay) cakeSliceDisplay.classList.add('show');
         if (btnScene3Next) btnScene3Next.style.display = 'inline-flex';
       } else {
         startScene3Countdown();
       }
     } else if (requestedScene === 4) {
-      triggerShootingStar();
-      if (wishedParam === 'true') {
-        if (btnWishLocked) btnWishLocked.style.display = 'none';
-        if (btnReWish) btnReWish.style.display = 'none';
-        if (cheekyBubble) cheekyBubble.classList.add('show');
-      }
-    } else if (requestedScene === 5) {
       initPartyGames();
-    } else if (requestedScene === 6) {
+    } else if (requestedScene === 5) {
       if (revealParam === 'true') {
         if (decryptProgress) decryptProgress.style.width = '99%';
         if (progressStatus) progressStatus.textContent = 'CRITICAL SYSTEM OVERLOAD! (99%)';
