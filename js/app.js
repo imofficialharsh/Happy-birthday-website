@@ -1,6 +1,6 @@
 /**
- * Main Application Controller (Appy Don VIP Concert Edition)
- * Manages 6-Scene Storyline, YouTube "Eye Candy" Player, VIP Concert, Slower Shooting Star, Party Games & Finale.
+ * Main Application Controller (Appy Don VIP Birthday Extravaganza)
+ * Complete 6-Scene Progression with Endless Looping Guitar Video & Low-Volume Justin Bieber MP3.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const vinylDisc = document.getElementById('vinyl-disc');
   const btnSoundToggle = document.getElementById('btn-sound-toggle');
   const localBieberAudio = document.getElementById('local-bieber-audio');
+  const guitarVideo = document.getElementById('guitar-video');
 
   // Scenes
   const scene1 = document.getElementById('scene-1');
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Scene 1 Elements
   const btnScene1Next = document.getElementById('btn-scene-1-next');
 
-  // Scene 2 Elements (Concert)
+  // Scene 2 Elements (VIP Concert)
   const btnConcertBoost = document.getElementById('btn-concert-boost');
   const vibeStatusLabel = document.getElementById('vibe-status-label');
   const vibeBarFill = document.getElementById('vibe-bar-fill');
@@ -88,12 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let concertTimer = null;
   let concertSeconds = 10;
 
-  // Local Audio & Video Elements
-  const guitarVideo = document.getElementById('guitar-video');
-
   // ==========================================
   // LOCAL MUSIC CONTROLLER (Justin Bieber - Eye Candy)
-  // Low volume (~30%), continuous looping across all scenes
+  // Low volume (30%), continuous looping across all scenes
   // ==========================================
   const MUSIC_VOLUME = 0.30; // Kept low and pleasant per user request
 
@@ -103,14 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localBieberAudio.addEventListener('play', () => {
       isBieberPlaying = true;
-      vinylDisc.classList.add('spinning');
-      btnMusicToggle.textContent = '⏸️';
+      if (vinylDisc) vinylDisc.classList.add('spinning');
+      if (btnMusicToggle) btnMusicToggle.textContent = '⏸️';
     });
 
     localBieberAudio.addEventListener('pause', () => {
       isBieberPlaying = false;
-      vinylDisc.classList.remove('spinning');
-      btnMusicToggle.textContent = '▶️';
+      if (vinylDisc) vinylDisc.classList.remove('spinning');
+      if (btnMusicToggle) btnMusicToggle.textContent = '▶️';
     });
 
     localBieberAudio.addEventListener('ended', () => {
@@ -125,10 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
     localBieberAudio.loop = true;
     localBieberAudio.play().then(() => {
       isBieberPlaying = true;
-      vinylDisc.classList.add('spinning');
-      btnMusicToggle.textContent = '⏸️';
+      if (vinylDisc) vinylDisc.classList.add('spinning');
+      if (btnMusicToggle) btnMusicToggle.textContent = '⏸️';
     }).catch(err => {
-      console.log('Audio autoplay waiting for user tap:', err);
+      console.log('Audio autoplay waiting for user interaction:', err);
     });
   }
 
@@ -137,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
       localBieberAudio.pause();
     }
     isBieberPlaying = false;
-    vinylDisc.classList.remove('spinning');
-    btnMusicToggle.textContent = '▶️';
+    if (vinylDisc) vinylDisc.classList.remove('spinning');
+    if (btnMusicToggle) btnMusicToggle.textContent = '▶️';
   }
 
   function toggleBieberMusic() {
@@ -153,45 +151,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  btnMusicToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleBieberMusic();
-  });
-  bieberMusicPill.addEventListener('click', toggleBieberMusic);
+  if (btnMusicToggle) {
+    btnMusicToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleBieberMusic();
+    });
+  }
+
+  if (bieberMusicPill) {
+    bieberMusicPill.addEventListener('click', toggleBieberMusic);
+  }
 
   // Boost Button in Concert Scene
-  btnConcertBoost.addEventListener('click', () => {
-    window.soundFX.init();
-    if (localBieberAudio) {
-      if (localBieberAudio.volume <= 0.32) {
-        localBieberAudio.volume = 0.45;
-        btnConcertBoost.textContent = '🔊 BOOST (45%)';
-      } else {
-        localBieberAudio.volume = MUSIC_VOLUME;
-        btnConcertBoost.textContent = '🔉 LOW (30%)';
+  if (btnConcertBoost) {
+    btnConcertBoost.addEventListener('click', () => {
+      window.soundFX.init();
+      if (localBieberAudio) {
+        if (localBieberAudio.volume <= 0.32) {
+          localBieberAudio.volume = 0.45;
+          btnConcertBoost.textContent = '🔊 BOOST (45%)';
+        } else {
+          localBieberAudio.volume = MUSIC_VOLUME;
+          btnConcertBoost.textContent = '🔉 LOW (30%)';
+        }
+        if (localBieberAudio.paused) {
+          playBieberMusic();
+        }
       }
-      if (localBieberAudio.paused) {
-        playBieberMusic();
+      window.soundFX.playFanfare();
+      if (window.confettiEngine) {
+        window.confettiEngine.blast({
+          particleCount: 40,
+          spread: 80,
+          origin: { x: 0.5, y: 0.45 }
+        });
       }
-    }
-    window.soundFX.playFanfare();
-    window.confettiEngine && window.confettiEngine.blast({
-      particleCount: 40,
-      spread: 80,
-      origin: { x: 0.5, y: 0.45 }
     });
-  });
+  }
 
   // Sound FX Mute Toggle
-  btnSoundToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isMuted = window.soundFX.toggleMute();
-    btnSoundToggle.textContent = isMuted ? '🔇' : '🔊';
-    btnSoundToggle.title = isMuted ? 'Unmute Sounds' : 'Mute Sounds';
-    if (!isMuted) {
-      window.soundFX.playPop(1.2);
-    }
-  });
+  if (btnSoundToggle) {
+    btnSoundToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isMuted = window.soundFX.toggleMute();
+      btnSoundToggle.textContent = isMuted ? '🔇' : '🔊';
+      btnSoundToggle.title = isMuted ? 'Unmute Sounds' : 'Mute Sounds';
+      if (!isMuted) {
+        window.soundFX.playPop(1.2);
+      }
+    });
+  }
 
   // Helper: Switch active scene
   function showScene(sceneNumber) {
@@ -204,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     currentScene = sceneNumber;
 
-    // Body background theme (Scene 4 is night-mode)
+    // Body background theme (Scene 4 is starry night-mode)
     if (sceneNumber === 4) {
       document.body.classList.add('night-mode');
     } else {
@@ -217,23 +226,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // SCENE 1 -> SCENE 2 (ENTER CONCERT)
   // ==========================================
-  btnScene1Next.addEventListener('click', () => {
-    window.soundFX.init();
-    window.soundFX.playPop(1.1);
-    window.soundFX.playFanfare();
+  if (btnScene1Next) {
+    btnScene1Next.addEventListener('click', () => {
+      window.soundFX.init();
+      window.soundFX.playPop(1.1);
+      window.soundFX.playFanfare();
 
-    // Start Justin Bieber song immediately
-    playBieberMusic();
+      // Start Justin Bieber song immediately
+      playBieberMusic();
 
-    window.confettiEngine && window.confettiEngine.blast({
-      particleCount: 50,
-      spread: 75,
-      origin: { x: 0.5, y: 0.6 }
+      if (window.confettiEngine) {
+        window.confettiEngine.blast({
+          particleCount: 50,
+          spread: 75,
+          origin: { x: 0.5, y: 0.6 }
+        });
+      }
+
+      showScene(2);
+      startConcertScene();
     });
-
-    showScene(2);
-    startConcertScene();
-  });
+  }
 
   // ==========================================
   // SCENE 2: VIP BIRTHDAY CONCERT (GUITAR VIDEO & ENDLESS JAM)
@@ -241,9 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function startConcertScene() {
     clearInterval(concertTimer);
     concertSeconds = 10;
-    vibeBarFill.style.width = '0%';
-    vibeStatusLabel.textContent = `Vibing to Eye Candy... 10s 🎧`;
-    btnScene2Next.style.display = 'none';
+    if (vibeBarFill) vibeBarFill.style.width = '0%';
+    if (vibeStatusLabel) vibeStatusLabel.textContent = 'Vibing to Eye Candy... 10s 🎧';
+    if (btnScene2Next) btnScene2Next.style.display = 'none';
 
     // 1. Ensure local Justin Bieber MP3 is playing continuously at low volume
     playBieberMusic();
@@ -263,34 +276,36 @@ document.addEventListener('DOMContentLoaded', () => {
     concertTimer = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(100, (elapsed / duration) * 100);
-      vibeBarFill.style.width = `${progress}%`;
+      if (vibeBarFill) vibeBarFill.style.width = `${progress}%`;
 
       const remaining = Math.max(0, Math.ceil((duration - elapsed) / 1000));
       if (remaining > 0) {
-        vibeStatusLabel.textContent = `Vibing to Eye Candy... ${remaining}s 🎧`;
+        if (vibeStatusLabel) vibeStatusLabel.textContent = `Vibing to Eye Candy... ${remaining}s 🎧`;
       } else {
         clearInterval(concertTimer);
-        vibeBarFill.style.width = '100%';
-        vibeStatusLabel.textContent = `Vibe check: 10000% IMMACULATE! 🎸🔥 (Jam on or bring the cake!)`;
-        btnScene2Next.style.display = 'inline-flex';
+        if (vibeBarFill) vibeBarFill.style.width = '100%';
+        if (vibeStatusLabel) vibeStatusLabel.textContent = 'Vibe check: 10000% IMMACULATE! 🎸🔥 (Jam on or bring the cake!)';
+        if (btnScene2Next) btnScene2Next.style.display = 'inline-flex';
 
         window.soundFX.playFanfare();
-        window.confettiEngine && window.confettiEngine.celebrationBlast();
+        if (window.confettiEngine) window.confettiEngine.celebrationBlast();
       }
     }, 100);
   }
 
   // Scene 2 -> Scene 3 (Bring out cake: pause video, but Justin Bieber song keeps playing endlessly!)
-  btnScene2Next.addEventListener('click', () => {
-    window.soundFX.playPop(1.1);
-    // Pause guitar video when entering cake scene
-    if (guitarVideo) {
-      guitarVideo.pause();
-    }
-    // Justin Bieber song keeps playing continuously across all scenes!
-    showScene(3);
-    startScene3Countdown();
-  });
+  if (btnScene2Next) {
+    btnScene2Next.addEventListener('click', () => {
+      window.soundFX.playPop(1.1);
+      // Pause guitar video when entering cake scene
+      if (guitarVideo) {
+        guitarVideo.pause();
+      }
+      // Justin Bieber song keeps playing continuously across all scenes!
+      showScene(3);
+      startScene3Countdown();
+    });
+  }
 
   // ==========================================
   // SCENE 3: 7-SECOND CANDLE BLOW & CAKE CUTTING
@@ -301,112 +316,127 @@ document.addEventListener('DOMContentLoaded', () => {
     isCandleBlown = false;
     isCakeSliced = false;
 
-    candleHeaderText.textContent = 'Get those lungs ready! Blowing out candles in...';
-    countdownDisplay.textContent = countdownValue;
-    countdownDisplay.classList.remove('ready');
-    countdownDisplay.style.display = 'inline-flex';
-    actionPrompt.style.display = 'none';
-    candleFlame.style.display = 'block';
-    smokePuff.classList.remove('puffed');
-    sliceGuide.classList.remove('visible');
-    cakeSliceDisplay.classList.remove('show');
-    btnScene3Next.style.display = 'none';
+    if (candleHeaderText) candleHeaderText.textContent = 'Get those lungs ready! Blowing out candles in...';
+    if (countdownDisplay) {
+      countdownDisplay.textContent = countdownValue;
+      countdownDisplay.classList.remove('ready');
+      countdownDisplay.style.display = 'inline-flex';
+    }
+    if (actionPrompt) actionPrompt.style.display = 'none';
+    if (candleFlame) candleFlame.style.display = 'block';
+    if (smokePuff) smokePuff.classList.remove('puffed');
+    if (sliceGuide) sliceGuide.classList.remove('visible');
+    if (cakeSliceDisplay) cakeSliceDisplay.classList.remove('show');
+    if (btnScene3Next) btnScene3Next.style.display = 'none';
 
     countdownTimer = setInterval(() => {
       countdownValue--;
       if (countdownValue > 0) {
-        countdownDisplay.textContent = countdownValue;
+        if (countdownDisplay) countdownDisplay.textContent = countdownValue;
         window.soundFX.playTick(1 + (7 - countdownValue) * 0.1);
       } else {
         clearInterval(countdownTimer);
-        countdownDisplay.textContent = '0';
-        countdownDisplay.classList.add('ready');
+        if (countdownDisplay) {
+          countdownDisplay.textContent = '0';
+          countdownDisplay.classList.add('ready');
+        }
         window.soundFX.playTick(1.8);
 
         setTimeout(() => {
-          candleHeaderText.textContent = 'Make your birthday wish, Appy Don! ✨';
-          countdownDisplay.style.display = 'none';
-          actionPrompt.style.display = 'inline-flex';
-          actionPromptText.textContent = 'TAP the candle to blow it out! 🌬️';
-          candleFlame.style.cursor = 'pointer';
-        }, 400);
+          if (candleHeaderText) candleHeaderText.textContent = 'Make your birthday wish, Appy Don! ✨';
+          if (countdownDisplay) countdownDisplay.style.display = 'none';
+          if (actionPrompt) {
+            actionPrompt.style.display = 'inline-flex';
+            if (actionPromptText) actionPromptText.textContent = 'TAP the candle to blow it out! 🌬️';
+          }
+        }, 800);
       }
     }, 1000);
   }
 
-  function handleCandleBlow() {
+  // Blowing out the candle
+  function handleBlowCandle() {
     if (countdownValue > 0 || isCandleBlown) return;
+
     isCandleBlown = true;
-
     window.soundFX.playBlow();
-    candleFlame.style.display = 'none';
-    smokePuff.classList.add('puffed');
+    if (candleFlame) candleFlame.style.display = 'none';
+    if (smokePuff) smokePuff.classList.add('puffed');
+
+    if (actionPromptText) actionPromptText.textContent = 'SWIPE or CLICK the cake to slice it! 🍰';
+
+    if (window.confettiEngine) {
+      window.confettiEngine.blast({
+        particleCount: 60,
+        spread: 80,
+        origin: { x: 0.5, y: 0.5 }
+      });
+    }
 
     setTimeout(() => {
-      window.soundFX.playFanfare();
-      window.confettiEngine && window.confettiEngine.celebrationBlast();
-    }, 250);
-
-    setTimeout(() => {
-      candleHeaderText.textContent = 'Slice the cake & celebrate! 🍰';
-      actionPromptText.textContent = 'Now swipe/click to slice the cake! 🍰';
-      sliceGuide.classList.add('visible');
-    }, 800);
+      if (sliceGuide) sliceGuide.classList.add('visible');
+    }, 400);
   }
 
-  candleFlame.addEventListener('click', handleCandleBlow);
-  cakeWrapper.addEventListener('click', () => {
-    if (countdownValue <= 0 && !isCandleBlown) {
-      handleCandleBlow();
-    }
-  });
+  if (candleFlame) candleFlame.addEventListener('click', handleBlowCandle);
+  if (cakeWrapper) {
+    cakeWrapper.addEventListener('click', () => {
+      if (!isCandleBlown && countdownValue === 0) {
+        handleBlowCandle();
+      }
+    });
+  }
 
+  // Slicing the cake
   function handleCakeSlice() {
     if (!isCandleBlown || isCakeSliced) return;
+
     isCakeSliced = true;
-
-    candleHeaderText.textContent = 'Woohoo! Happy Birthday Superstar! 🥳✨';
     window.soundFX.playSlice();
-    sliceGuide.classList.remove('visible');
-    actionPrompt.style.display = 'none';
+    window.soundFX.playFanfare();
 
-    window.confettiEngine && window.confettiEngine.blast({
-      particleCount: 50,
-      spread: 90,
-      origin: { x: 0.5, y: 0.55 },
-      shapes: ['heart', 'circle']
-    });
+    if (sliceGuide) sliceGuide.classList.remove('visible');
+    if (actionPrompt) actionPrompt.style.display = 'none';
+    if (candleHeaderText) candleHeaderText.textContent = 'Woohoo! Happy Birthday Superstar! 🥳✨';
 
-    cakeSliceDisplay.classList.add('show');
-    btnScene3Next.style.display = 'inline-flex';
+    if (window.confettiEngine) {
+      window.confettiEngine.celebrationBlast();
+    }
+
+    if (cakeSliceDisplay) cakeSliceDisplay.classList.add('show');
+    if (btnScene3Next) btnScene3Next.style.display = 'inline-flex';
   }
 
-  sliceGuide.addEventListener('click', handleCakeSlice);
+  if (sliceGuide) sliceGuide.addEventListener('click', handleCakeSlice);
 
-  // Swipe support for slicing
+  // Touch Swipe support for slicing
   let touchStartX = 0;
   let touchStartY = 0;
-  cakeWrapper.addEventListener('touchstart', (e) => {
-    if (!isCandleBlown || isCakeSliced) return;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
+  if (cakeWrapper) {
+    cakeWrapper.addEventListener('touchstart', (e) => {
+      if (!isCandleBlown || isCakeSliced) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
 
-  cakeWrapper.addEventListener('touchend', (e) => {
-    if (!isCandleBlown || isCakeSliced) return;
-    const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
-    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-    if (dx > 30 || dy > 30 || isCandleBlown) {
-      handleCakeSlice();
-    }
-  }, { passive: true });
+    cakeWrapper.addEventListener('touchend', (e) => {
+      if (!isCandleBlown || isCakeSliced) return;
+      const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      if (dx > 30 || dy > 30 || isCandleBlown) {
+        handleCakeSlice();
+      }
+    }, { passive: true });
+  }
 
   // Scene 3 -> Scene 4 (Shooting star)
-  btnScene3Next.addEventListener('click', () => {
-    window.soundFX.playPop(1.1);
-    showScene(4);
-    triggerShootingStar();
-  });
+  if (btnScene3Next) {
+    btnScene3Next.addEventListener('click', () => {
+      window.soundFX.playPop(1.1);
+      showScene(4);
+      triggerShootingStar();
+    });
+  }
 
   // ==========================================
   // SCENE 4: SLOWER SHOOTING STAR & FLIRTY WISH
@@ -434,39 +464,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 7500);
   }
 
-  btnReWish.addEventListener('click', () => {
-    triggerShootingStar();
-    window.confettiEngine && window.confettiEngine.blast({
-      particleCount: 20,
-      spread: 60,
-      origin: { x: 0.5, y: 0.4 },
-      shapes: ['star']
+  if (btnReWish) {
+    btnReWish.addEventListener('click', () => {
+      triggerShootingStar();
+      if (window.confettiEngine) {
+        window.confettiEngine.blast({
+          particleCount: 20,
+          spread: 60,
+          origin: { x: 0.5, y: 0.4 },
+          shapes: ['star']
+        });
+      }
     });
-  });
+  }
 
-  btnWishLocked.addEventListener('click', () => {
-    window.soundFX.playPop(1.2);
-    window.soundFX.playChime(1318.51);
+  if (btnWishLocked) {
+    btnWishLocked.addEventListener('click', () => {
+      window.soundFX.playPop(1.2);
+      window.soundFX.playChime(1318.51);
 
-    window.confettiEngine && window.confettiEngine.blast({
-      particleCount: 40,
-      spread: 80,
-      origin: { x: 0.5, y: 0.65 },
-      shapes: ['star', 'heart']
+      if (window.confettiEngine) {
+        window.confettiEngine.blast({
+          particleCount: 40,
+          spread: 80,
+          origin: { x: 0.5, y: 0.65 },
+          shapes: ['star', 'heart']
+        });
+      }
+
+      btnWishLocked.style.display = 'none';
+      if (btnReWish) btnReWish.style.display = 'none';
+      if (cheekyBubble) cheekyBubble.classList.add('show');
     });
-
-    btnWishLocked.style.display = 'none';
-    btnReWish.style.display = 'none';
-    cheekyBubble.classList.add('show');
-  });
+  }
 
   // Scene 4 -> Scene 5 (Party Cards & Games)
-  btnScene4Next.addEventListener('click', () => {
-    window.soundFX.playPop(1.2);
-    clearInterval(shootingStarInterval);
-    showScene(5);
-    initPartyGames();
-  });
+  if (btnScene4Next) {
+    btnScene4Next.addEventListener('click', () => {
+      window.soundFX.playPop(1.2);
+      clearInterval(shootingStarInterval);
+      showScene(5);
+      initPartyGames();
+    });
+  }
 
   // ==========================================
   // SCENE 5: PARTY CARDS & GAMES (QUIZ + SCRATCH CARD)
@@ -504,152 +544,141 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentQuestionIndex = 0;
 
   function initPartyGames() {
-    partyQuizContainer.style.display = 'block';
-    partyScratchContainer.style.display = 'none';
-    btnScene5Next.style.display = 'none';
+    if (partyQuizContainer) partyQuizContainer.style.display = 'block';
+    if (partyScratchContainer) partyScratchContainer.style.display = 'none';
+    if (btnScene5Next) btnScene5Next.style.display = 'none';
     currentQuestionIndex = 0;
     renderQuestion(0);
   }
 
   function renderQuestion(idx) {
-    quizReactionBubble.style.display = 'none';
-    blushMeterBox.style.display = 'none';
-    quizOptionsGrid.style.display = 'grid';
+    if (quizReactionBubble) quizReactionBubble.style.display = 'none';
+    if (blushMeterBox) blushMeterBox.style.display = 'none';
+    if (quizOptionsGrid) quizOptionsGrid.style.display = 'grid';
 
     if (idx < quizData.length) {
-      quizCounter.textContent = `Question ${idx + 1} of 4`;
-      quizQuestionText.textContent = quizData[idx].q;
-      quizOptionsGrid.innerHTML = '';
-
-      quizData[idx].options.forEach((opt, optIdx) => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-option-btn';
-        btn.textContent = opt.text;
-        btn.addEventListener('click', () => {
-          window.soundFX.playQuizOption(optIdx);
-          selectOption(opt, btn);
+      if (quizCounter) quizCounter.textContent = `Question ${idx + 1} of 4`;
+      if (quizQuestionText) quizQuestionText.textContent = quizData[idx].q;
+      if (quizOptionsGrid) {
+        quizOptionsGrid.innerHTML = '';
+        quizData[idx].options.forEach((opt) => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-option-btn';
+          btn.textContent = opt.text;
+          btn.addEventListener('click', () => {
+            handleQuizAnswer(opt);
+          });
+          quizOptionsGrid.appendChild(btn);
         });
-        quizOptionsGrid.appendChild(btn);
-      });
+      }
     } else {
-      // Question 4: Blush-O-Meter!
-      quizCounter.textContent = `Question 4 of 4 (Bonus!)`;
-      quizQuestionText.textContent = "Final interrogation: Be honest, Appy Don... How hard are you blushing or smiling right this second?";
-      quizOptionsGrid.style.display = 'none';
-      blushMeterBox.style.display = 'flex';
-      updateBlushDisplay(parseInt(blushSlider.value, 10));
+      // Question 4: Blush-O-Meter
+      if (quizCounter) quizCounter.textContent = 'Question 4 of 4 (Interactive)';
+      if (quizQuestionText) quizQuestionText.textContent = 'Final Vibe Check: How much did this whole surprise make Appy Don blush?';
+      if (quizOptionsGrid) quizOptionsGrid.style.display = 'none';
+      if (blushMeterBox) blushMeterBox.style.display = 'block';
+      updateBlushDisplay(blushSlider ? blushSlider.value : 75);
     }
   }
 
-  function selectOption(opt, btnElement) {
-    document.querySelectorAll('.quiz-option-btn').forEach(b => b.classList.remove('selected'));
-    btnElement.classList.add('selected');
+  function handleQuizAnswer(option) {
+    window.soundFX.playQuizOption();
+    if (reactionEmoji) reactionEmoji.textContent = option.emoji;
+    if (reactionText) reactionText.textContent = option.reaction;
+    if (quizReactionBubble) quizReactionBubble.style.display = 'flex';
 
-    reactionEmoji.textContent = opt.emoji;
-    reactionText.textContent = opt.reaction;
-    quizReactionBubble.style.display = 'flex';
+    if (window.confettiEngine) {
+      window.confettiEngine.blast({
+        particleCount: 20,
+        spread: 60,
+        origin: { x: 0.5, y: 0.7 }
+      });
+    }
+  }
 
-    window.confettiEngine && window.confettiEngine.blast({
-      particleCount: 18,
-      spread: 60,
-      origin: { x: 0.5, y: 0.6 }
+  if (btnQuizNext) {
+    btnQuizNext.addEventListener('click', () => {
+      window.soundFX.playPop(1.1);
+      currentQuestionIndex++;
+      renderQuestion(currentQuestionIndex);
     });
   }
 
-  btnQuizNext.addEventListener('click', () => {
-    window.soundFX.playPop(1.1);
-    currentQuestionIndex++;
-    renderQuestion(currentQuestionIndex);
-  });
-
-  // Blush-O-Meter slider updates
-  blushSlider.addEventListener('input', (e) => {
-    const val = parseInt(e.target.value, 10);
-    window.soundFX.playSliderTick(val);
-    updateBlushDisplay(val);
-  });
-
+  // Blush-o-meter logic
   function updateBlushDisplay(val) {
+    val = parseInt(val, 10);
     if (val < 25) {
-      blushEmojiFace.textContent = '😎';
-      blushFeedbackTag.textContent = "Cold-blooded Don (Liar! I know you're grinning)";
-    } else if (val < 50) {
-      blushEmojiFace.textContent = '😏';
-      blushFeedbackTag.textContent = "A tiny smirk detected... Appy Don is amused!";
-    } else if (val < 75) {
-      blushEmojiFace.textContent = '🌸';
-      blushFeedbackTag.textContent = "Cheeks turning strawberry pink! So cute!";
+      if (blushEmojiFace) blushEmojiFace.textContent = '🤥';
+      if (blushFeedbackTag) blushFeedbackTag.textContent = 'Trying so hard to play it cool! (We see you smiling!)';
+    } else if (val < 65) {
+      if (blushEmojiFace) blushEmojiFace.textContent = '🌸';
+      if (blushFeedbackTag) blushFeedbackTag.textContent = 'Aww, cheeks are turning strawberry pink! 🍓';
     } else if (val < 90) {
-      blushEmojiFace.textContent = '🥰';
-      blushFeedbackTag.textContent = "Cutie mode 100% activated! Heart melting!";
+      if (blushEmojiFace) blushEmojiFace.textContent = '🥰';
+      if (blushFeedbackTag) blushFeedbackTag.textContent = 'Full heart-eyes! Appy Don is loving every second!';
     } else {
-      blushEmojiFace.textContent = '🍅';
-      blushFeedbackTag.textContent = "Full tomato mode! Appy Don is blushing hard! ✨";
+      if (blushEmojiFace) blushEmojiFace.textContent = '🍅';
+      if (blushFeedbackTag) blushFeedbackTag.textContent = '1000% MAXIMUM TOMATO MODE! 🚨 Irresistibly cute!';
     }
   }
 
-  // Lock in Blush score -> Transitions smoothly to the Scratch Card!
-  btnBlushConfirm.addEventListener('click', () => {
-    window.soundFX.playFanfare();
-    window.confettiEngine && window.confettiEngine.celebrationBlast();
-    btnBlushConfirm.style.display = 'none';
-    blushFeedbackTag.textContent = "✅ Blush score locked! Unlocking VIP Scratch Card...";
+  if (blushSlider) {
+    blushSlider.addEventListener('input', (e) => {
+      updateBlushDisplay(e.target.value);
+      window.soundFX.playSliderTick(e.target.value / 100);
+    });
+  }
 
-    setTimeout(() => {
-      partyQuizContainer.style.display = 'none';
-      partyScratchContainer.style.display = 'block';
+  if (btnBlushConfirm) {
+    btnBlushConfirm.addEventListener('click', () => {
+      window.soundFX.playFanfare();
+      if (window.confettiEngine) {
+        window.confettiEngine.celebrationBlast();
+      }
+
+      // Transition to Sub-step 5B: Scratch card
+      if (partyQuizContainer) partyQuizContainer.style.display = 'none';
+      if (partyScratchContainer) partyScratchContainer.style.display = 'block';
       initScratchCard();
-    }, 1200);
-  });
+    });
+  }
 
-  // VIP Birthday Scratch Card Logic
+  // Sub-step 5B: Scratch Card Engine
   function initScratchCard() {
-    isScratchCompleted = false;
-    scratchRevealedMsg.style.display = 'none';
-    btnScene5Next.style.display = 'none';
-
+    if (!scratchCanvas) return;
     const ctx = scratchCanvas.getContext('2d');
-    const rect = scratchCanvas.parentElement.getBoundingClientRect();
-    const width = rect.width || 340;
-    const height = rect.height || 210;
+    const rect = scratchCanvas.getBoundingClientRect();
+    const w = rect.width || 320;
+    const h = rect.height || 210;
 
-    scratchCanvas.width = width;
-    scratchCanvas.height = height;
+    scratchCanvas.width = w;
+    scratchCanvas.height = h;
 
-    const grad = ctx.createLinearGradient(0, 0, width, height);
-    grad.addColorStop(0, '#d97706');
-    grad.addColorStop(0.3, '#fbbf24');
-    grad.addColorStop(0.5, '#fef08a');
+    // Fill with cartoonish gold glitter foil
+    const grad = ctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, '#ffd166');
+    grad.addColorStop(0.3, '#fef08a');
     grad.addColorStop(0.7, '#f59e0b');
-    grad.addColorStop(1, '#b45309');
+    grad.addColorStop(1, '#d97706');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0, 0, w, h);
 
+    // Decorative sparkles & text on the scratch card
     ctx.fillStyle = '#78350f';
     ctx.font = 'bold 16px "Fredoka", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('✨ SCRATCH HERE WITH FINGER / MOUSE ✨', width / 2, height / 2 - 10);
+    ctx.fillText('✨ SCRATCH WITH COIN / FINGER ✨', w / 2, h / 2 - 12);
     ctx.font = 'bold 13px "Nunito", sans-serif';
-    ctx.fillText('VIP APPY DON BIRTHDAY PASS', width / 2, height / 2 + 16);
+    ctx.fillText('👑 Classified Don Perk Awaits! 👑', w / 2, h / 2 + 14);
 
     let isDrawing = false;
+    isScratchCompleted = false;
 
-    function getCoords(e) {
-      const b = scratchCanvas.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      return {
-        x: clientX - b.left,
-        y: clientY - b.top
-      };
-    }
-
-    function scratch(e) {
-      if (!isDrawing || isScratchCompleted) return;
-      const { x, y } = getCoords(e);
+    function scratch(x, y) {
+      if (isScratchCompleted) return;
       ctx.globalCompositeOperation = 'destination-out';
       ctx.beginPath();
-      ctx.arc(x, y, 24, 0, Math.PI * 2);
+      ctx.arc(x, y, 22, 0, Math.PI * 2, false);
       ctx.fill();
 
       window.soundFX.playScratch();
@@ -658,52 +687,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkScratchPercentage() {
       if (isScratchCompleted) return;
-      if (Math.random() > 0.35) return;
+      try {
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const totalPixels = imgData.data.length / 4;
+        let clearPixels = 0;
 
-      const imgData = ctx.getImageData(0, 0, width, height);
-      const pixels = imgData.data;
-      let transparentCount = 0;
-      const step = 32;
-      for (let i = 3; i < pixels.length; i += 4 * step) {
-        if (pixels[i] === 0) transparentCount++;
-      }
-      const totalSampled = pixels.length / (4 * step);
-      const ratio = transparentCount / totalSampled;
+        for (let i = 3; i < imgData.data.length; i += 16) {
+          if (imgData.data[i] === 0) {
+            clearPixels += 4;
+          }
+        }
 
-      if (ratio > 0.38) {
-        isScratchCompleted = true;
-        ctx.clearRect(0, 0, width, height);
-        scratchRevealedMsg.style.display = 'block';
-        btnScene5Next.style.display = 'inline-flex';
-        window.soundFX.playFanfare();
-        window.confettiEngine && window.confettiEngine.celebrationBlast();
+        const percent = (clearPixels / totalPixels) * 100;
+        if (percent > 40) {
+          isScratchCompleted = true;
+          ctx.clearRect(0, 0, w, h);
+          if (scratchRevealedMsg) scratchRevealedMsg.style.display = 'block';
+          if (btnScene5Next) btnScene5Next.style.display = 'inline-flex';
+
+          window.soundFX.playFanfare();
+          if (window.confettiEngine) {
+            window.confettiEngine.celebrationBlast();
+          }
+        }
+      } catch (err) {
+        console.log('Scratch canvas check:', err);
       }
     }
 
-    scratchCanvas.onmousedown = (e) => { isDrawing = true; scratch(e); };
-    window.onmouseup = () => { isDrawing = false; };
-    scratchCanvas.onmousemove = scratch;
+    // Scratch Event listeners
+    scratchCanvas.onmousedown = (e) => {
+      isDrawing = true;
+      scratch(e.offsetX, e.offsetY);
+    };
+    scratchCanvas.onmousemove = (e) => {
+      if (isDrawing) scratch(e.offsetX, e.offsetY);
+    };
+    window.addEventListener('mouseup', () => { isDrawing = false; });
 
-    scratchCanvas.ontouchstart = (e) => { isDrawing = true; scratch(e); };
-    window.ontouchend = () => { isDrawing = false; };
-    scratchCanvas.ontouchmove = scratch;
+    scratchCanvas.ontouchstart = (e) => {
+      isDrawing = true;
+      const b = scratchCanvas.getBoundingClientRect();
+      const t = e.touches[0];
+      scratch(t.clientX - b.left, t.clientY - b.top);
+    };
+    scratchCanvas.ontouchmove = (e) => {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const b = scratchCanvas.getBoundingClientRect();
+      const t = e.touches[0];
+      scratch(t.clientX - b.left, t.clientY - b.top);
+    };
+    scratchCanvas.ontouchend = () => { isDrawing = false; };
   }
 
   // Scene 5 -> Scene 6 (Finale)
-  btnScene5Next.addEventListener('click', () => {
-    window.soundFX.playPop(1.1);
-    showScene(6);
-    startHackerDecryption();
-  });
+  if (btnScene5Next) {
+    btnScene5Next.addEventListener('click', () => {
+      window.soundFX.playPop(1.1);
+      showScene(6);
+      startHackerDecryption();
+    });
+  }
 
   // ==========================================
   // SCENE 6: DECRYPTION PROGRESS & GRAND REVEAL
   // ==========================================
   function startHackerDecryption() {
-    decryptProgress.style.width = '0%';
-    progressStatus.textContent = 'Initializing neural network...';
-    error404Banner.classList.remove('show');
-    grandReveal.classList.remove('show');
+    if (decryptProgress) decryptProgress.style.width = '0%';
+    if (progressStatus) progressStatus.textContent = 'Initializing neural network...';
+    if (error404Banner) error404Banner.classList.remove('show');
+    if (grandReveal) grandReveal.classList.remove('show');
 
     let percent = 0;
     const logs = [
@@ -718,52 +772,59 @@ document.addEventListener('DOMContentLoaded', () => {
       percent += Math.floor(Math.random() * 4) + 2;
       if (percent > 99) percent = 99;
 
-      decryptProgress.style.width = percent + '%';
+      if (decryptProgress) decryptProgress.style.width = percent + '%';
       window.soundFX.playDecryptClick();
 
       const matchedLog = logs.filter(l => percent >= l.at).pop();
-      if (matchedLog) {
+      if (matchedLog && progressStatus) {
         progressStatus.textContent = `${matchedLog.text} (${percent}%)`;
       }
 
       if (percent >= 99) {
         clearInterval(progressInterval);
-        progressStatus.textContent = 'CRITICAL SYSTEM OVERLOAD! (99%)';
+        if (progressStatus) progressStatus.textContent = 'CRITICAL SYSTEM OVERLOAD! (99%)';
 
         setTimeout(() => {
           window.soundFX.playErrorBuzzer();
-          error404Banner.classList.add('show');
+          if (error404Banner) error404Banner.classList.add('show');
 
           setTimeout(() => {
-            grandReveal.classList.add('show');
+            if (grandReveal) grandReveal.classList.add('show');
             window.soundFX.playFanfare();
-            window.confettiEngine && window.confettiEngine.celebrationBlast();
+            if (window.confettiEngine) window.confettiEngine.celebrationBlast();
           }, 900);
         }, 600);
       }
     }, 60);
   }
 
-  // Replay
-  btnReplay.addEventListener('click', () => {
-    window.soundFX.playPop(1);
-    btnWishLocked.style.display = 'inline-flex';
-    btnReWish.style.display = 'inline-flex';
-    cheekyBubble.classList.remove('show');
-    showScene(1);
-  });
+  // Replay Button
+  if (btnReplay) {
+    btnReplay.addEventListener('click', () => {
+      window.soundFX.playPop(1);
+      if (btnWishLocked) btnWishLocked.style.display = 'inline-flex';
+      if (btnReWish) btnReWish.style.display = 'inline-flex';
+      if (cheekyBubble) cheekyBubble.classList.remove('show');
+      showScene(1);
+    });
+  }
 
   // Celebrate More Button
-  btnCelebrateMore.addEventListener('click', () => {
-    window.soundFX.playFanfare();
-    window.confettiEngine && window.confettiEngine.celebrationBlast();
-  });
+  if (btnCelebrateMore) {
+    btnCelebrateMore.addEventListener('click', () => {
+      window.soundFX.playFanfare();
+      if (window.confettiEngine) window.confettiEngine.celebrationBlast();
+    });
+  }
 
   // ==========================================
   // INTERACTIVE CLICK / TOUCH SPARKLES
   // ==========================================
   const sparkleEmojis = ['✨', '💖', '⭐', '🧁', '🌸', '💫', '🎉', '👑', '💣', '🎸'];
   window.addEventListener('pointerdown', (e) => {
+    // Prevent interfering with buttons/inputs
+    if (e.target.closest('button, input, canvas, .music-pill')) return;
+
     if (window.confettiEngine) {
       window.confettiEngine.clickBurst(e.clientX, e.clientY);
     }
@@ -799,9 +860,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (requestedScene === 2) {
       if (stateParam === 'ready') {
-        vibeBarFill.style.width = '100%';
-        vibeStatusLabel.textContent = 'Vibe check: 10000% IMMACULATE! 🎸🔥 (Jam on or bring the cake!)';
-        btnScene2Next.style.display = 'inline-flex';
+        if (vibeBarFill) vibeBarFill.style.width = '100%';
+        if (vibeStatusLabel) vibeStatusLabel.textContent = 'Vibe check: 10000% IMMACULATE! 🎸🔥 (Jam on or bring the cake!)';
+        if (btnScene2Next) btnScene2Next.style.display = 'inline-flex';
         if (guitarVideo) {
           guitarVideo.muted = true;
           guitarVideo.loop = true;
@@ -813,37 +874,39 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (requestedScene === 3) {
       if (stateParam === 'ready') {
         countdownValue = 0;
-        countdownDisplay.style.display = 'none';
-        actionPrompt.style.display = 'inline-flex';
-        actionPromptText.textContent = 'TAP the candle to blow it out! 🌬️';
+        if (countdownDisplay) countdownDisplay.style.display = 'none';
+        if (actionPrompt) {
+          actionPrompt.style.display = 'inline-flex';
+          if (actionPromptText) actionPromptText.textContent = 'TAP the candle to blow it out! 🌬️';
+        }
       } else if (stateParam === 'sliced') {
         countdownValue = 0;
         isCandleBlown = true;
         isCakeSliced = true;
-        candleHeaderText.textContent = 'Woohoo! Happy Birthday Superstar! 🥳✨';
-        countdownDisplay.style.display = 'none';
-        candleFlame.style.display = 'none';
-        actionPrompt.style.display = 'none';
-        cakeSliceDisplay.classList.add('show');
-        btnScene3Next.style.display = 'inline-flex';
+        if (candleHeaderText) candleHeaderText.textContent = 'Woohoo! Happy Birthday Superstar! 🥳✨';
+        if (countdownDisplay) countdownDisplay.style.display = 'none';
+        if (candleFlame) candleFlame.style.display = 'none';
+        if (actionPrompt) actionPrompt.style.display = 'none';
+        if (cakeSliceDisplay) cakeSliceDisplay.classList.add('show');
+        if (btnScene3Next) btnScene3Next.style.display = 'inline-flex';
       } else {
         startScene3Countdown();
       }
     } else if (requestedScene === 4) {
       triggerShootingStar();
       if (wishedParam === 'true') {
-        btnWishLocked.style.display = 'none';
-        btnReWish.style.display = 'none';
-        cheekyBubble.classList.add('show');
+        if (btnWishLocked) btnWishLocked.style.display = 'none';
+        if (btnReWish) btnReWish.style.display = 'none';
+        if (cheekyBubble) cheekyBubble.classList.add('show');
       }
     } else if (requestedScene === 5) {
       initPartyGames();
     } else if (requestedScene === 6) {
       if (revealParam === 'true') {
-        decryptProgress.style.width = '99%';
-        progressStatus.textContent = 'CRITICAL SYSTEM OVERLOAD! (99%)';
-        error404Banner.classList.add('show');
-        grandReveal.classList.add('show');
+        if (decryptProgress) decryptProgress.style.width = '99%';
+        if (progressStatus) progressStatus.textContent = 'CRITICAL SYSTEM OVERLOAD! (99%)';
+        if (error404Banner) error404Banner.classList.add('show');
+        if (grandReveal) grandReveal.classList.add('show');
       } else {
         startHackerDecryption();
       }
