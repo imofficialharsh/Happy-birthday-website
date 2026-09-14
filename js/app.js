@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     {
-      q: "Second question: What is the secret admirer's biggest weakness when it comes to Apoorva?",
+      q: "Second question: What is the mysterious developer's biggest weakness when it comes to Apoorva?",
       options: [
         { text: "A) That killer smile that resets my whole brain 🧠💥", emoji: "😍", reaction: "Total system reboot required every single time you smile! 💥" },
         { text: "B) That cute bossy 'Don' attitude 😈", emoji: "🫡", reaction: "Terrifyingly cute. 10/10 would obey orders again. 😂" },
