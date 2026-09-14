@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         clearInterval(concertTimer);
         if (vibeBarFill) vibeBarFill.style.width = '100%';
-        if (vibeStatusLabel) vibeStatusLabel.textContent = 'Vibe check: 10000% IMMACULATE! 🎸🔥 (Jam on or bring the cake!)';
+        if (vibeStatusLabel) vibeStatusLabel.textContent = 'Appy Don Vibe Check: 10000% IMMACULATE! 🎸🕶️';
         if (btnScene2Next) btnScene2Next.style.display = 'inline-flex';
 
         window.soundFX.playFanfare();
@@ -861,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (requestedScene === 2) {
       if (stateParam === 'ready') {
         if (vibeBarFill) vibeBarFill.style.width = '100%';
-        if (vibeStatusLabel) vibeStatusLabel.textContent = 'Vibe check: 10000% IMMACULATE! 🎸🔥 (Jam on or bring the cake!)';
+        if (vibeStatusLabel) vibeStatusLabel.textContent = 'Appy Don Vibe Check: 10000% IMMACULATE! 🎸🕶️';
         if (btnScene2Next) btnScene2Next.style.display = 'inline-flex';
         if (guitarVideo) {
           guitarVideo.muted = true;
