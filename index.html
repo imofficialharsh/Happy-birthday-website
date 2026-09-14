@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Appy Don's VIP Birthday Extravaganza! 🎂✨</title>
+  <meta name="description" content="An interactive, playfully goofy birthday surprise made just for Apoorva (urf Appy Don)!">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+</head>
+<body>
+
+  <!-- Local Audio Player for Justin Bieber - Eye Candy -->
+  <audio id="local-bieber-audio" src="Justin-Bieber-EYE-CANDY-(HipHopKit.com).mp3" preload="auto" loop></audio>
+
+  <!-- Top Floating Bar (Music & Sound controls) -->
+  <header class="top-bar">
+    <div class="top-badge">
+      <span class="badge-icon">👑</span>
+      <span class="badge-text">Appy Don Edition</span>
+    </div>
+
+    <!-- Justin Bieber Swag II Music Pill -->
+    <div id="bieber-music-pill" class="music-pill" title="Justin Bieber - Eye Candy (Swag II)">
+      <div class="vinyl-disc" id="vinyl-disc">
+        <div class="vinyl-center"></div>
+      </div>
+      <div class="music-info">
+        <span class="music-title">Eye Candy 🍬</span>
+        <span class="music-artist">Justin Bieber (Swag II)</span>
+      </div>
+      <button id="btn-music-toggle" class="pill-btn" aria-label="Play/Pause Music">
+        ▶️
+      </button>
+    </div>
+
+    <div class="audio-controls">
+      <button id="btn-sound-toggle" class="icon-btn" title="Toggle Sound Effects" aria-label="Toggle Sound Effects">
+        🔊
+      </button>
+    </div>
+  </header>
+
+  <!-- Main App Container -->
+  <main class="app-container">
+
+    <!-- ==========================================
+         SCENE 1: THE DRAMATIC INTRO
+         ========================================== -->
+    <section id="scene-1" class="scene active" aria-label="Scene 1: Dramatic Intro">
+      <div class="bubbly-card">
+        <div class="runway-tape">
+          <span>⚠️ WARNING: HIGH VOLTAGE SWAG DETECTED</span>
+        </div>
+
+        <h1 class="dramatic-header">
+          HOLD UP… Everyone clear the runway for APPOORVA! 🛑💅
+        </h1>
+
+        <div class="vip-badge-container">
+          <div class="vip-badge">
+            <span class="crown-icon">👑</span>
+            <span class="vip-tag">APPY DON</span>
+          </div>
+          <span class="sparkle-doodle" style="top: -5px; right: 15px;">✨</span>
+          <span class="sparkle-doodle" style="bottom: 10px; left: 10px; animation-delay: 1.2s;">💣</span>
+          <span class="sparkle-doodle" style="top: 30px; left: -10px; animation-delay: 0.6s;">🕶️</span>
+        </div>
+
+        <p class="intro-subtitle">
+          It is officially YOUR DAY! The undisputed Don of Cuteness, <strong>Appy Don</strong>, has arrived. All other birthdays are officially cancelled! 🥳✨
+        </p>
+
+        <button id="btn-scene-1-next" class="bouncy-btn btn-pink">
+          <span>Step into your kingdom, Appy Don 👑</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCENE 2: THE VIP BIRTHDAY CONCERT (GUITAR VIDEO)
+         ========================================== -->
+    <section id="scene-2" class="scene" aria-label="Scene 2: VIP Concert">
+      <div class="bubbly-card concert-card">
+        <div class="concert-badge">
+          <span>🎸 LIVE CONCERT STAGE</span>
+        </div>
+
+        <h2 class="concert-heading">
+          Ek VIP Concert Toh Banta Hai! 🎸🎤
+        </h2>
+        <p class="concert-subtitle">
+          Before cake cutting, mood set karne ke liye live jam on the cake! 🔥✨
+        </p>
+
+        <!-- Concert Stage Visual with looping video -->
+        <div class="concert-stage-wrapper">
+          <div class="spotlight-left"></div>
+          <div class="spotlight-right"></div>
+          
+          <div class="floating-notes-container">
+            <span class="note-particle note-1">🎵</span>
+            <span class="note-particle note-2">🎶</span>
+            <span class="note-particle note-3">🎸</span>
+            <span class="note-particle note-4">✨</span>
+            <span class="note-particle note-5">🍬</span>
+          </div>
+
+          <div class="guitar-hero-box" id="guitar-hero-box">
+            <video id="guitar-video" class="concert-guitar-video" src="guitar.mp4" autoplay loop muted playsinline webkit-playsinline></video>
+          </div>
+        </div>
+
+        <!-- Live Track & Equalizer Status -->
+        <div class="concert-now-playing">
+          <div class="equalizer-bars">
+            <span class="eq-bar bar-1"></span>
+            <span class="eq-bar bar-2"></span>
+            <span class="eq-bar bar-3"></span>
+            <span class="eq-bar bar-4"></span>
+            <span class="eq-bar bar-5"></span>
+          </div>
+          <div class="now-playing-text">
+            <span class="np-label">NOW PLAYING FOR APPY DON</span>
+            <span class="np-song">Justin Bieber – Eye Candy 🍬 (Swag II)</span>
+          </div>
+          <button id="btn-concert-boost" class="concert-boost-btn" title="Tap to make sure sound is pumping!">
+            🔊 BOOST
+          </button>
+        </div>
+
+        <!-- 10-Second Vibe Progress -->
+        <div class="vibe-progress-box" id="vibe-progress-box">
+          <div class="vibe-status-label" id="vibe-status-label">
+            Vibing in progress... 10s 🎧
+          </div>
+          <div class="vibe-bar-track">
+            <div class="vibe-bar-fill" id="vibe-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- Button appears after 10 seconds (Music keeps playing!) -->
+        <button id="btn-scene-2-next" class="bouncy-btn btn-yellow" style="display: none;">
+          <span>Enough vibing, bring out the real cake! 🎂➔</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCENE 3: 7-SECOND CANDLE BLOW & CAKE CUTTING
+         ========================================== -->
+    <section id="scene-3" class="scene" aria-label="Scene 3: Candle Blow and Cake Cutting">
+      <div class="bubbly-card">
+        <h2 id="candle-header-text" class="timer-header">
+          Get those lungs ready! Blowing out candles in...
+        </h2>
+
+        <!-- 7-Second Countdown Box -->
+        <div id="countdown-display" class="countdown-box">7</div>
+
+        <!-- Dynamic Action Prompt Banner -->
+        <div id="action-prompt" class="action-prompt-banner" style="display: none;">
+          <span id="action-prompt-text">TAP the candle to blow it out! 🌬️</span>
+        </div>
+
+        <!-- Illustrated Cake Stage -->
+        <div class="cake-stage">
+          <!-- Slicing Guide Overlay -->
+          <div id="slice-guide" class="slice-guide" title="Click or swipe here to slice!">
+            <span class="guide-text">✂️ SLICE HERE!</span>
+          </div>
+
+          <div class="cake-svg-wrapper" id="cake-wrapper">
+            <svg class="cake-svg" viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cake Stand / Plate -->
+              <ellipse cx="150" cy="225" rx="140" ry="14" fill="#E2E8F0" stroke="#2D253F" stroke-width="4"/>
+              <ellipse cx="150" cy="222" rx="125" ry="10" fill="#FFFFFF"/>
+
+              <!-- Tier 1: Bottom Cake Body -->
+              <path d="M40 160 C40 145, 260 145, 260 160 L260 210 C260 225, 40 225, 40 210 Z" fill="#FED7AA" stroke="#2D253F" stroke-width="4"/>
+              <path d="M40 185 C80 195, 120 178, 160 188 C200 198, 240 180, 260 185" stroke="#FDBA74" stroke-width="6" stroke-linecap="round"/>
+              <path d="M40 160 C60 180, 75 160, 95 180 C115 160, 135 182, 155 162 C175 182, 195 162, 215 180 C235 162, 250 175, 260 160 L260 152 C260 138, 40 138, 40 152 Z" fill="#FF8FA3" stroke="#2D253F" stroke-width="4"/>
+
+              <!-- Tier 2: Top Cake Body -->
+              <path d="M75 105 C75 92, 225 92, 225 105 L225 145 C225 158, 75 158, 75 145 Z" fill="#FFE4E6" stroke="#2D253F" stroke-width="4"/>
+              <path d="M75 105 C90 125, 105 105, 120 125 C135 108, 150 126, 165 106 C180 126, 195 108, 210 125 C218 112, 222 118, 225 105 L225 98 C225 86, 75 86, 75 98 Z" fill="#FFF275" stroke="#2D253F" stroke-width="4"/>
+
+              <!-- Sprinkles -->
+              <rect x="95" y="115" width="8" height="4" rx="2" fill="#38BDF8" transform="rotate(25 95 115)"/>
+              <rect x="140" y="112" width="8" height="4" rx="2" fill="#A855F7" transform="rotate(-15 140 112)"/>
+              <rect x="180" y="118" width="8" height="4" rx="2" fill="#EC4899" transform="rotate(40 180 118)"/>
+              <rect x="70" y="175" width="9" height="4" rx="2" fill="#10B981" transform="rotate(15 70 175)"/>
+              <rect x="120" y="180" width="9" height="4" rx="2" fill="#EC4899" transform="rotate(-30 120 180)"/>
+              <rect x="180" y="175" width="9" height="4" rx="2" fill="#F59E0B" transform="rotate(20 180 175)"/>
+              <rect x="230" y="178" width="9" height="4" rx="2" fill="#8B5CF6" transform="rotate(-25 230 178)"/>
+
+              <!-- Cake Inscription -->
+              <rect x="85" y="188" width="130" height="20" rx="6" fill="#FFFFFF" stroke="#2D253F" stroke-width="2"/>
+              <text x="150" y="202" font-family="'Fredoka', sans-serif" font-weight="700" font-size="11" fill="#E11D48" text-anchor="middle">👑 APPY DON 👑</text>
+
+              <!-- Birthday Candle -->
+              <g id="candle-group">
+                <rect x="143" y="45" width="14" height="46" rx="6" fill="#C4B5FD" stroke="#2D253F" stroke-width="3.5"/>
+                <line x1="144" y1="56" x2="156" y2="51" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                <line x1="144" y1="69" x2="156" y2="64" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                <line x1="144" y1="82" x2="156" y2="77" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                <line x1="150" y1="45" x2="150" y2="36" stroke="#2D253F" stroke-width="3" stroke-linecap="round"/>
+
+                <!-- Candle Flame -->
+                <g id="candle-flame" class="flame">
+                  <circle class="flame-halo" cx="150" cy="22" r="18" fill="#FDE047"/>
+                  <path d="M150 10 C143 20, 140 28, 150 36 C160 28, 157 20, 150 10 Z" fill="#F97316" stroke="#2D253F" stroke-width="2"/>
+                  <path d="M150 17 C146 23, 145 28, 150 33 C155 28, 154 23, 150 17 Z" fill="#FEF08A"/>
+                </g>
+
+                <!-- Smoke Puff -->
+                <g id="smoke-puff" class="smoke-puff">
+                  <circle cx="150" cy="20" r="10" fill="#94A3B8"/>
+                  <circle cx="142" cy="14" r="8" fill="#CBD5E1"/>
+                  <circle cx="158" cy="12" r="9" fill="#E2E8F0"/>
+                  <circle cx="150" cy="4" r="7" fill="#F1F5F9"/>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Slice Secured Graphic & Calorie Fact -->
+        <div id="cake-slice-display" class="cake-slice-display">
+          <div class="slice-emoji">🍰</div>
+          <div class="calorie-fact-card">
+            <span class="fact-badge">SCIENTIFIC BREAKTHROUGH 🧪</span>
+            <p class="fact-text">
+              Slice secured for Appy Don! Fun fact: Birthday cake calories strictly do not exist today. Science confirmed it. 🎂
+            </p>
+          </div>
+        </div>
+
+        <button id="btn-scene-3-next" class="bouncy-btn btn-purple" style="display: none;">
+          <span>Next up: Something magical 🪄➔</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCENE 4: THE SHOOTING STAR (FLIRTY WISH)
+         (Placed right after cake cutting as requested!)
+         ========================================== -->
+    <section id="scene-4" class="scene" aria-label="Scene 4: The Shooting Star Wish">
+      <div class="bubbly-card">
+        <!-- Sky box container with stars -->
+        <div class="star-canvas-container">
+          <!-- Animated slower shooting star -->
+          <div id="shooting-star" class="shooting-star-element"></div>
+          <div id="shooting-star-2" class="shooting-star-element star-delay"></div>
+          
+          <span class="twinkle-star" style="top: 25px; left: 30px;">⭐</span>
+          <span class="twinkle-star" style="top: 80px; left: 80px; animation-delay: 0.5s;">✨</span>
+          <span class="twinkle-star" style="top: 35px; right: 60px; animation-delay: 1.1s;">⭐</span>
+          <span class="twinkle-star" style="top: 120px; right: 90px; animation-delay: 0.3s;">✨</span>
+          <span class="twinkle-star" style="top: 140px; left: 45px; animation-delay: 0.8s;">🌟</span>
+          <span class="twinkle-star" style="top: 60px; right: 180px; animation-delay: 1.4s;">⭐</span>
+        </div>
+
+        <div class="wish-urgent-banner">
+          <span>QUICK QUICK QUICK! A shooting star! 🌠<br>Close your eyes and make a wish, Appy Don!</span>
+        </div>
+
+        <div class="wish-buttons-row">
+          <button id="btn-wish-locked" class="bouncy-btn btn-yellow">
+            <span>Done! Wish locked in ✨</span>
+          </button>
+          <button id="btn-re-wish" class="bouncy-btn btn-mint icon-mini-btn" title="Shoot another star!">
+            <span>Shoot Another Star 🌠</span>
+          </button>
+        </div>
+
+        <!-- Cheeky Speech Bubble -->
+        <div id="cheeky-bubble" class="cheeky-bubble-container">
+          <div class="speech-bubble">
+            <p class="bubble-lead">
+              Hold on… you didn’t just wish for me, did you, Appy Don? 😏
+            </p>
+            <p class="bubble-sub">
+              Be honest! You gotta wish for something realistic... like infinite closet space, unlimited coffee, or a pet penguin. Go easy on the universe, Don!
+            </p>
+          </div>
+
+          <div class="cheeky-avatar">
+            <span>🐧✨</span>
+          </div>
+
+          <button id="btn-scene-4-next" class="bouncy-btn btn-pink">
+            <span>Thoda fun toh banta hai party mein! 🃏🎉➔</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCENE 5: PARTY CARDS & GAMES (FLIRTY QUIZ + SCRATCH CARD)
+         ========================================== -->
+    <section id="scene-5" class="scene" aria-label="Scene 5: Party Games">
+      <div class="bubbly-card">
+        <div class="quiz-badge">
+          <span>🃏 PARTY FUN & VIBE CHECK</span>
+        </div>
+
+        <!-- Sub-step 5A: Flirty Quiz & Blush-O-Meter -->
+        <div id="party-quiz-container">
+          <h2 id="quiz-title" class="quiz-heading">
+            Appy Don's Vibe & Flirt Check 🔍
+          </h2>
+
+          <div id="quiz-card-box" class="quiz-card-box">
+            <div class="quiz-question-counter" id="quiz-counter">
+              Question 1 of 4
+            </div>
+
+            <p class="quiz-question-text" id="quiz-question-text">
+              First question, Appy Don: What is your official criminal offense today?
+            </p>
+
+            <div class="quiz-options-grid" id="quiz-options-grid">
+              <!-- Dynamically populated in JS -->
+            </div>
+
+            <!-- Answer Reaction Bubble -->
+            <div id="quiz-reaction-bubble" class="quiz-reaction-bubble" style="display: none;">
+              <span class="reaction-emoji" id="reaction-emoji">💘</span>
+              <p class="reaction-text" id="reaction-text">
+                Guilty as charged! Bail set at 1 million smiles. 🥰
+              </p>
+              <button id="btn-quiz-next" class="bouncy-btn btn-yellow mini-next-btn">
+                <span>Next Question ➔</span>
+              </button>
+            </div>
+
+            <!-- Blush-O-Meter (Question 4 Interactive Slider) -->
+            <div id="blush-meter-box" class="blush-meter-box" style="display: none;">
+              <div class="blush-emoji-display" id="blush-emoji-face">
+                🍅
+              </div>
+              <div class="blush-feedback-tag" id="blush-feedback-tag">
+                Full tomato mode! Appy Don is blushing hard!
+              </div>
+              <div class="slider-container">
+                <input type="range" id="blush-slider" min="0" max="100" value="75" class="custom-blush-slider">
+              </div>
+              <div class="slider-labels">
+                <span>Not at all 🤥</span>
+                <span>Kinda pink 🌸</span>
+                <span>1000% Blush 🍅</span>
+              </div>
+              <button id="btn-blush-confirm" class="bouncy-btn btn-pink">
+                <span>Lock in Appy's Blush Score! 🔒💖</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-step 5B: VIP Birthday Scratch Card (Appears after quiz) -->
+        <div id="party-scratch-container" style="display: none;">
+          <h2 class="timer-header">
+            Appy Don's VIP Birthday Scratch Card! 🎫✨
+          </h2>
+          <p class="scratch-instruction">
+            Rub/scratch the golden card below with your finger or mouse to reveal your classified birthday perk! ✨
+          </p>
+
+          <div class="scratch-card-wrapper" id="scratch-wrapper">
+            <!-- Prize layer underneath -->
+            <div class="scratch-prize-card">
+              <div class="jackpot-banner">🌟 OFFICIAL WINNER 🌟</div>
+              <div class="prize-title">1x LIFETIME VIP PASS</div>
+              <ul class="prize-perks">
+                <li>✨ Unlimited genuine compliments on demand</li>
+                <li>🍰 1x Free birthday treat (Web Dev pays!)</li>
+                <li>🛡️ Immunity from being roasted for 48 hours</li>
+              </ul>
+              <div class="prize-code">SERIAL: #APPY-DON-SUPREME-2026</div>
+            </div>
+
+            <!-- Canvas scratch overlay -->
+            <canvas id="scratch-canvas" class="scratch-canvas"></canvas>
+          </div>
+
+          <div id="scratch-revealed-msg" class="scratch-revealed-msg" style="display: none;">
+            🎉 PERK UNLOCKED! Appy Don has officially cashed in! 💖
+          </div>
+        </div>
+
+        <!-- Next button for Scene 5 to Scene 6 -->
+        <button id="btn-scene-5-next" class="bouncy-btn btn-mint" style="display: none;">
+          <span>Who even made all of this?! 👀➔</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCENE 6: THE ANONYMOUS MYSTERY FINALE
+         ========================================== -->
+    <section id="scene-6" class="scene" aria-label="Scene 6: Anonymous Mystery Finale">
+      <div class="bubbly-card">
+        <div class="mystery-header-tag">
+          <span>📁 CLASSIFIED DOSSIER #0914</span>
+        </div>
+
+        <!-- Teaser Progress Box -->
+        <div id="teaser-box" class="teaser-box">
+          <h3 class="teaser-title">
+            Decrypting identity of Appy Don's secret admirer / web developer extraordinaire... 🕵️‍♀️
+          </h3>
+
+          <div class="progress-track">
+            <div id="decrypt-progress" class="progress-fill"></div>
+          </div>
+
+          <div id="progress-status" class="progress-status-text">
+            Initializing neural network...
+          </div>
+
+          <div id="error-404-banner" class="error-banner">
+            ⚠️ Error 404: Too handsome/mysterious to reveal!
+          </div>
+        </div>
+
+        <!-- Grand Goofy Reveal Container -->
+        <div id="grand-reveal" class="grand-reveal-container">
+          <div class="disguised-avatar-card">
+            <div class="disguised-emoji-face">
+              🥸
+            </div>
+            <div class="access-denied-stamp">
+              ACCESS DENIED 🤫
+            </div>
+          </div>
+
+          <div class="classified-message-card">
+            <span class="classified-tag">OFFICIAL CONFIDENTIAL MEMO</span>
+            <p class="main-message">
+              Subject: <strong>Apoorva (urf Appy Don 🕶️)</strong><br><br>
+              Identity remains classified. Let’s just say: someone who thinks you’re <span class="highlight-word">ridiculously awesome</span>, <span class="highlight-word">undeniably pretty</span>, and definitely grinning right now picturing your reaction. Have the absolute happiest birthday, superstar! May your year be filled with pure swag, endless laughter, and everything you’ve ever wished for! ✨💛
+            </p>
+          </div>
+
+          <div class="finale-btn-group">
+            <button id="btn-replay" class="bouncy-btn btn-yellow">
+              <span>Replay the surprise 🔄</span>
+            </button>
+            <button id="btn-celebrate-more" class="bouncy-btn btn-mint">
+              <span>More Confetti! 🎉</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
