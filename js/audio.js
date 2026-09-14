@@ -368,6 +368,73 @@ class SoundFX {
       return true;
     }
   }
+
+  // Playful affirmative chirp when picking a quiz option
+  playQuizOption() {
+    if (this.isMuted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const notes = [659.25, 880.00]; // E5 -> A5 bright sweet chime
+    const now = this.ctx.currentTime;
+    notes.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      const t = now + idx * 0.08;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.2);
+    });
+  }
+
+  // Soft slider tick tuned with pitch
+  playSliderTick(fraction = 0.5) {
+    if (this.isMuted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    const now = this.ctx.currentTime;
+    const safeFraction = Math.max(0, Math.min(1, Number(fraction) || 0.5));
+    const freq = 420 + safeFraction * 480;
+    osc.frequency.setValueAtTime(freq, now);
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.05);
+  }
+
+  // Soft textured scratch card sound with throttle
+  playScratch() {
+    if (this.isMuted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = performance.now();
+    if (this._lastScratchTime && now - this._lastScratchTime < 70) return;
+    this._lastScratchTime = now;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    const t = this.ctx.currentTime;
+    osc.frequency.setValueAtTime(320 + Math.random() * 260, t);
+    gain.gain.setValueAtTime(0.08, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.06);
+  }
 }
 
 window.soundFX = new SoundFX();

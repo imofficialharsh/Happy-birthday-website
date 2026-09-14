@@ -483,10 +483,14 @@ document.addEventListener('DOMContentLoaded', () => {
         quizOptionsGrid.innerHTML = '';
         quizData[idx].options.forEach((opt) => {
           const btn = document.createElement('button');
+          btn.type = 'button';
           btn.className = 'quiz-option-btn';
-          btn.textContent = opt.text;
+          btn.innerHTML = `
+            <span class="quiz-option-radio"></span>
+            <span class="quiz-option-text">${opt.text}</span>
+          `;
           btn.addEventListener('click', () => {
-            handleQuizAnswer(opt);
+            handleQuizAnswer(opt, btn);
           });
           quizOptionsGrid.appendChild(btn);
         });
@@ -501,16 +505,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function handleQuizAnswer(option) {
-    window.soundFX.playQuizOption();
+  function handleQuizAnswer(option, clickedBtn) {
+    // 1. Highlight selected button clearly
+    if (quizOptionsGrid) {
+      const allBtns = quizOptionsGrid.querySelectorAll('.quiz-option-btn');
+      allBtns.forEach((b) => b.classList.remove('selected'));
+    }
+    if (clickedBtn) {
+      clickedBtn.classList.add('selected');
+    }
+
+    // 2. Play sound safely
+    try {
+      if (window.soundFX && typeof window.soundFX.playQuizOption === 'function') {
+        window.soundFX.playQuizOption();
+      } else if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+        window.soundFX.playPop(1.2);
+      }
+    } catch (e) {
+      console.warn('Audio FX play error:', e);
+    }
+
+    // 3. Update reaction bubble
     if (reactionEmoji) reactionEmoji.textContent = option.emoji;
     if (reactionText) reactionText.textContent = option.reaction;
-    if (quizReactionBubble) quizReactionBubble.style.display = 'flex';
+    if (quizReactionBubble) {
+      quizReactionBubble.style.display = 'flex';
+      // Ensure reaction bubble and Next button are visible to user
+      setTimeout(() => {
+        quizReactionBubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 60);
+    }
 
-    if (window.confettiEngine) {
+    // 4. Confetti burst
+    if (window.confettiEngine && typeof window.confettiEngine.blast === 'function') {
       window.confettiEngine.blast({
-        particleCount: 20,
-        spread: 60,
+        particleCount: 24,
+        spread: 65,
         origin: { x: 0.5, y: 0.7 }
       });
     }
@@ -518,7 +549,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnQuizNext) {
     btnQuizNext.addEventListener('click', () => {
-      window.soundFX.playPop(1.1);
+      try {
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          window.soundFX.playPop(1.1);
+        }
+      } catch (e) {}
       currentQuestionIndex++;
       renderQuestion(currentQuestionIndex);
     });
@@ -545,14 +580,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (blushSlider) {
     blushSlider.addEventListener('input', (e) => {
       updateBlushDisplay(e.target.value);
-      window.soundFX.playSliderTick(e.target.value / 100);
+      try {
+        if (window.soundFX && typeof window.soundFX.playSliderTick === 'function') {
+          window.soundFX.playSliderTick(e.target.value / 100);
+        }
+      } catch (err) {}
     });
   }
 
   if (btnBlushConfirm) {
     btnBlushConfirm.addEventListener('click', () => {
-      window.soundFX.playFanfare();
-      if (window.confettiEngine) {
+      try {
+        if (window.soundFX && typeof window.soundFX.playFanfare === 'function') {
+          window.soundFX.playFanfare();
+        }
+      } catch (err) {}
+      if (window.confettiEngine && typeof window.confettiEngine.celebrationBlast === 'function') {
         window.confettiEngine.celebrationBlast();
       }
 
@@ -601,7 +644,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.arc(x, y, 22, 0, Math.PI * 2, false);
       ctx.fill();
 
-      window.soundFX.playScratch();
+      try {
+        if (window.soundFX && typeof window.soundFX.playScratch === 'function') {
+          window.soundFX.playScratch();
+        }
+      } catch (err) {}
       checkScratchPercentage();
     }
 
@@ -625,8 +672,12 @@ document.addEventListener('DOMContentLoaded', () => {
           if (scratchRevealedMsg) scratchRevealedMsg.style.display = 'block';
           if (btnScene4Next) btnScene4Next.style.display = 'inline-flex';
 
-          window.soundFX.playFanfare();
-          if (window.confettiEngine) {
+          try {
+            if (window.soundFX && typeof window.soundFX.playFanfare === 'function') {
+              window.soundFX.playFanfare();
+            }
+          } catch (err) {}
+          if (window.confettiEngine && typeof window.confettiEngine.celebrationBlast === 'function') {
             window.confettiEngine.celebrationBlast();
           }
         }
