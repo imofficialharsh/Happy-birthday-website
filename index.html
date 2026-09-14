@@ -99,11 +99,10 @@
           <div class="spotlight-right"></div>
           
           <div class="floating-notes-container">
-            <span class="note-particle note-1">🎵</span>
-            <span class="note-particle note-2">🎶</span>
+            <span class="note-particle note-1">🎸</span>
+            <span class="note-particle note-2">🍬</span>
             <span class="note-particle note-3">🎸</span>
-            <span class="note-particle note-4">✨</span>
-            <span class="note-particle note-5">🍬</span>
+            <span class="note-particle note-4">🍬</span>
           </div>
 
           <div class="guitar-hero-box" id="guitar-hero-box">
@@ -386,8 +385,29 @@
           <span>📁 CLASSIFIED DOSSIER #0914</span>
         </div>
 
-        <!-- Teaser Progress Box -->
-        <div id="teaser-box" class="teaser-box">
+        <!-- Option to Decrypt Developer or Skip (Apoorva chooses!) -->
+        <div id="decrypt-prompt-card" class="decrypt-prompt-card">
+          <div class="dossier-lock-avatar">
+            🔒🕵️‍♀️
+          </div>
+          <h3 class="decrypt-prompt-title">
+            The Final Mystery: Who Is Behind All of This? 👀
+          </h3>
+          <p class="decrypt-prompt-desc">
+            Someone specially built this entire birthday surprise party for Appy Don. His identity file is encrypted inside Classified Dossier #0914.
+          </p>
+          <div class="decrypt-action-group">
+            <button id="btn-start-decrypt" class="bouncy-btn btn-pink btn-decrypt-opt">
+              <span>🔓 Decrypt & Reveal the Developer! 🕵️‍♀️</span>
+            </button>
+            <button id="btn-skip-decrypt" class="bouncy-btn btn-yellow btn-skip-opt">
+              <span>🤫 Keep it a mystery & leave a secret note 💌</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Teaser Progress Box (Only triggers if Apoorva chooses to decrypt!) -->
+        <div id="teaser-box" class="teaser-box" style="display: none;">
           <h3 class="teaser-title">
             Decrypting identity of Appy Don's secret admirer / web developer extraordinaire... 🕵️‍♀️
           </h3>
@@ -407,21 +427,119 @@
 
         <!-- Grand Goofy Reveal Container -->
         <div id="grand-reveal" class="grand-reveal-container">
-          <div class="disguised-avatar-card">
-            <div class="disguised-emoji-face">
-              🥸
+          <!-- Back button at the top of reveal/feedback view -->
+          <div class="reveal-top-bar" id="reveal-top-bar">
+            <button type="button" id="btn-reveal-back" class="mini-back-btn" title="Back to mystery choices">
+              <span>⬅ Back to Choices</span>
+            </button>
+          </div>
+
+          <!-- Access Denied Content (Disguised Avatar + Confidential Memo) -->
+          <div id="access-denied-content" class="access-denied-content">
+            <div class="disguised-avatar-card">
+              <div class="disguised-emoji-face">
+                🥸
+              </div>
+              <div class="access-denied-stamp">
+                ACCESS DENIED 🤫
+              </div>
             </div>
-            <div class="access-denied-stamp">
-              ACCESS DENIED 🤫
+
+            <div class="classified-message-card">
+              <span class="classified-tag">OFFICIAL CONFIDENTIAL MEMO</span>
+              <p class="main-message">
+                Subject: <strong>Apoorva (urf Appy Don 🕶️)</strong><br><br>
+                Identity remains classified. Let’s just say: someone who thinks you’re <span class="highlight-word">ridiculously awesome</span>, <span class="highlight-word">undeniably pretty</span>, and definitely grinning right now picturing your reaction. Have the absolute happiest birthday, superstar! May your year be filled with pure swag, endless laughter, and everything you’ve ever wished for! ✨💛
+              </p>
             </div>
           </div>
 
-          <div class="classified-message-card">
-            <span class="classified-tag">OFFICIAL CONFIDENTIAL MEMO</span>
-            <p class="main-message">
-              Subject: <strong>Apoorva (urf Appy Don 🕶️)</strong><br><br>
-              Identity remains classified. Let’s just say: someone who thinks you’re <span class="highlight-word">ridiculously awesome</span>, <span class="highlight-word">undeniably pretty</span>, and definitely grinning right now picturing your reaction. Have the absolute happiest birthday, superstar! May your year be filled with pure swag, endless laughter, and everything you’ve ever wished for! ✨💛
+          <!-- ==========================================
+               ANONYMOUS TRANSMISSION / FEEDBACK DROP BOX
+               ========================================== -->
+          <div class="secret-transmission-card" id="secret-transmission-card">
+            <div class="transmission-badge">
+              <span>📡 ENCRYPTED BACK-CHANNEL #0914</span>
+            </div>
+
+            <h3 class="transmission-heading">
+              Leave a Secret Whisper for the Developer 📮💌
+            </h3>
+            <p class="transmission-subtext">
+              He has no way to trace this back to you, but your words will reach him directly. No awkwardness, no pressure — just your honest reaction or anything you want to whisper back! ✨
             </p>
+
+            <div id="transmission-form-content">
+              <!-- Interactive Gesture Pills -->
+              <div class="gestures-header-row">
+                <span class="gestures-label">Tap your vibe or gesture:</span>
+                <span class="gestures-hint">(Choose 1 or more)</span>
+              </div>
+
+              <div class="quick-gestures-grid" id="quick-gestures-grid">
+                <button type="button" class="gesture-pill" data-gesture="Made me smile! 🥰">
+                  <span class="pill-emoji">🥰</span>
+                  <span class="pill-text">Made me smile</span>
+                </button>
+                <button type="button" class="gesture-pill" data-gesture="Honestly, this was crazy sweet 🥺💖">
+                  <span class="pill-emoji">🥺</span>
+                  <span class="pill-text">Crazy sweet surprise</span>
+                </button>
+                <button type="button" class="gesture-pill" data-gesture="Dying of curiosity... who are you? 👀🕵️">
+                  <span class="pill-emoji">👀</span>
+                  <span class="pill-text">Who are you?!</span>
+                </button>
+                <button type="button" class="gesture-pill" data-gesture="Peace offering accepted / unblock vibes? 🕊️✨">
+                  <span class="pill-emoji">🕊️</span>
+                  <span class="pill-text">Peace offering / Unblock vibe</span>
+                </button>
+                <button type="button" class="gesture-pill" data-gesture="Appy Don attitude 1000% approved 👑🕶️">
+                  <span class="pill-emoji">👑</span>
+                  <span class="pill-text">Don Appy Approved!</span>
+                </button>
+              </div>
+
+              <!-- Optional Custom Message Input -->
+              <div class="secret-input-wrapper">
+                <label for="secret-msg-text" class="secret-input-label">
+                  Add a personal note or message:
+                </label>
+                <textarea
+                  id="secret-msg-text"
+                  class="secret-msg-textarea"
+                  rows="3"
+                  maxlength="500"
+                  placeholder="Whisper whatever you're thinking... (optional, he reads every word 💌)"
+                ></textarea>
+                <div class="secret-input-meta">
+                  <span class="privacy-tag">🔒 100% Anonymous & Private</span>
+                  <span class="char-count" id="secret-char-counter">0/500</span>
+                </div>
+              </div>
+
+              <!-- Validation nudge (hidden by default) -->
+              <div id="secret-form-nudge" class="secret-form-nudge" style="display: none;">
+                <span>💡 Tap at least one reaction pill or write a note!</span>
+              </div>
+
+              <!-- Transmit Button -->
+              <button type="button" id="btn-transmit-secret" class="bouncy-btn btn-pink btn-transmit">
+                <span>Transmit Secret Message 🚀💌</span>
+              </button>
+            </div>
+
+            <!-- Success Card (Revealed after transmission) -->
+            <div id="transmission-success-box" class="transmission-success-box" style="display: none;">
+              <div class="success-seal-emoji">💌✨</div>
+              <h4 class="success-heading">Message Sealed & Transmitted! 🚀💖</h4>
+              <p class="success-message">
+                Your message has been sent into the digital cosmos and delivered directly to the secret developer. You just made his entire year, superstar.
+              </p>
+              <div class="delivered-memo-preview" id="delivered-memo-preview"></div>
+              <div class="sent-checkmark-tag">
+                <span>✓ Successfully Received & Encrypted</span>
+              </div>
+            </div>
           </div>
 
           <div class="finale-btn-group">

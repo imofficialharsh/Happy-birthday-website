@@ -62,10 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnScene4Next = document.getElementById('btn-scene-4-next');
 
   // Scene 5 Elements (The Anonymous Mystery Finale)
+  const decryptPromptCard = document.getElementById('decrypt-prompt-card');
+  const btnStartDecrypt = document.getElementById('btn-start-decrypt');
+  const btnSkipDecrypt = document.getElementById('btn-skip-decrypt');
+  const teaserBox = document.getElementById('teaser-box');
   const decryptProgress = document.getElementById('decrypt-progress');
   const progressStatus = document.getElementById('progress-status');
   const error404Banner = document.getElementById('error-404-banner');
   const grandReveal = document.getElementById('grand-reveal');
+  const accessDeniedContent = document.getElementById('access-denied-content');
+  const btnRevealBack = document.getElementById('btn-reveal-back');
   const btnReplay = document.getElementById('btn-replay');
   const btnCelebrateMore = document.getElementById('btn-celebrate-more');
 
@@ -715,9 +721,76 @@ document.addEventListener('DOMContentLoaded', () => {
   // Scene 4 -> Scene 5 (Finale)
   if (btnScene4Next) {
     btnScene4Next.addEventListener('click', () => {
-      window.soundFX.playPop(1.1);
+      try {
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          window.soundFX.playPop(1.1);
+        }
+      } catch (err) {}
       showScene(5);
+      initScene5();
+    });
+  }
+
+  function initScene5() {
+    if (decryptPromptCard) decryptPromptCard.style.display = 'block';
+    if (teaserBox) teaserBox.style.display = 'none';
+    if (grandReveal) grandReveal.classList.remove('show');
+    if (accessDeniedContent) accessDeniedContent.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  if (btnRevealBack) {
+    btnRevealBack.addEventListener('click', () => {
+      try {
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          window.soundFX.playPop(1.1);
+        }
+      } catch (err) {}
+      initScene5();
+    });
+  }
+
+  if (btnStartDecrypt) {
+    btnStartDecrypt.addEventListener('click', () => {
+      try {
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          window.soundFX.playPop(1.1);
+        }
+      } catch (err) {}
+      if (decryptPromptCard) decryptPromptCard.style.display = 'none';
+      if (teaserBox) teaserBox.style.display = 'block';
+      if (accessDeniedContent) accessDeniedContent.style.display = 'block';
       startHackerDecryption();
+    });
+  }
+
+  if (btnSkipDecrypt) {
+    btnSkipDecrypt.addEventListener('click', () => {
+      try {
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          window.soundFX.playPop(1.1);
+        }
+      } catch (err) {}
+      // When choosing to send feedback only: DO NOT show access denied content!
+      if (decryptPromptCard) decryptPromptCard.style.display = 'none';
+      if (teaserBox) teaserBox.style.display = 'none';
+      if (accessDeniedContent) accessDeniedContent.style.display = 'none';
+      if (grandReveal) grandReveal.classList.add('show');
+
+      try {
+        if (window.soundFX && typeof window.soundFX.playFanfare === 'function') {
+          window.soundFX.playFanfare();
+        }
+      } catch (err) {}
+      if (window.confettiEngine && typeof window.confettiEngine.celebrationBlast === 'function') {
+        window.confettiEngine.celebrationBlast();
+      }
+      setTimeout(() => {
+        const transmissionCard = document.getElementById('secret-transmission-card');
+        if (transmissionCard) {
+          transmissionCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 60);
     });
   }
 
@@ -760,6 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (error404Banner) error404Banner.classList.add('show');
 
           setTimeout(() => {
+            if (accessDeniedContent) accessDeniedContent.style.display = 'block';
             if (grandReveal) grandReveal.classList.add('show');
             window.soundFX.playFanfare();
             if (window.confettiEngine) window.confettiEngine.celebrationBlast();
@@ -773,6 +847,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnReplay) {
     btnReplay.addEventListener('click', () => {
       window.soundFX.playPop(1);
+      initScene5();
       showScene(1);
     });
   }
@@ -786,12 +861,119 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
+  // SCENE 5: ANONYMOUS TRANSMISSION & FORMSPREE BACK-CHANNEL
+  // ==========================================
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xqpkrdpq';
+  const gesturePills = document.querySelectorAll('.gesture-pill');
+  const secretMsgText = document.getElementById('secret-msg-text');
+  const secretCharCounter = document.getElementById('secret-char-counter');
+  const btnTransmitSecret = document.getElementById('btn-transmit-secret');
+  const secretFormNudge = document.getElementById('secret-form-nudge');
+  const transmissionSuccessBox = document.getElementById('transmission-success-box');
+  const transmissionFormContent = document.getElementById('transmission-form-content');
+  const deliveredMemoPreview = document.getElementById('delivered-memo-preview');
+
+  gesturePills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      pill.classList.toggle('selected');
+      try {
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          window.soundFX.playPop(1.25);
+        }
+      } catch (err) {}
+      if (secretFormNudge) secretFormNudge.style.display = 'none';
+    });
+  });
+
+  if (secretMsgText && secretCharCounter) {
+    secretMsgText.addEventListener('input', (e) => {
+      const len = e.target.value.length;
+      secretCharCounter.textContent = `${len}/500`;
+      if (secretFormNudge) secretFormNudge.style.display = 'none';
+    });
+  }
+
+  if (btnTransmitSecret) {
+    btnTransmitSecret.addEventListener('click', () => {
+      const selectedPills = Array.from(document.querySelectorAll('.gesture-pill.selected'))
+        .map((p) => p.getAttribute('data-gesture'));
+      const message = secretMsgText ? secretMsgText.value.trim() : '';
+
+      if (selectedPills.length === 0 && !message) {
+        if (secretFormNudge) {
+          secretFormNudge.style.display = 'block';
+        }
+        return;
+      }
+
+      btnTransmitSecret.disabled = true;
+      btnTransmitSecret.innerHTML = '<span>Transmitting into the cosmos... 📡✨</span>';
+
+      const payload = {
+        subject: '💌 Secret Birthday Note from Appy Don!',
+        gestures: selectedPills.join(' | ') || 'None selected',
+        personal_message: message || '(No written note, gesture only)',
+        timestamp: new Date().toLocaleString()
+      };
+
+      // Local storage backup
+      try {
+        const past = JSON.parse(localStorage.getItem('appy_secret_notes') || '[]');
+        past.push(payload);
+        localStorage.setItem('appy_secret_notes', JSON.stringify(past));
+      } catch (err) {}
+
+      fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).catch((err) => {
+        console.log('Formspree transmission notice:', err);
+      }).finally(() => {
+        // Celebrate and confirm
+        try {
+          if (window.soundFX && typeof window.soundFX.playFanfare === 'function') {
+            window.soundFX.playFanfare();
+          }
+        } catch (err) {}
+        if (window.confettiEngine && typeof window.confettiEngine.celebrationBlast === 'function') {
+          window.confettiEngine.celebrationBlast();
+        }
+
+        if (transmissionFormContent) transmissionFormContent.style.display = 'none';
+        if (transmissionSuccessBox) transmissionSuccessBox.style.display = 'block';
+
+        if (deliveredMemoPreview) {
+          let html = '';
+          if (selectedPills.length > 0) {
+            html += `<div class="delivered-pills"><strong>Gestures:</strong> ${selectedPills.map((g) => `<span class="delivered-chip">${g}</span>`).join(' ')}</div>`;
+          }
+          if (message) {
+            const clean = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            html += `<div class="delivered-note"><strong>Note:</strong> “${clean}”</div>`;
+          }
+          deliveredMemoPreview.innerHTML = html;
+        }
+
+        if (transmissionSuccessBox) {
+          setTimeout(() => {
+            transmissionSuccessBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 60);
+        }
+      });
+    });
+  }
+
+  // ==========================================
   // INTERACTIVE CLICK / TOUCH SPARKLES
   // ==========================================
   const sparkleEmojis = ['✨', '💖', '⭐', '🧁', '🌸', '💫', '🎉', '👑', '💣', '🎸'];
   window.addEventListener('pointerdown', (e) => {
-    // Prevent interfering with buttons/inputs
-    if (e.target.closest('button, input, canvas, .music-pill')) return;
+    // Prevent interfering with buttons/inputs/textareas
+    if (e.target.closest('button, input, textarea, canvas, .music-pill, .gesture-pill')) return;
 
     if (window.confettiEngine) {
       window.confettiEngine.clickBurst(e.clientX, e.clientY);
@@ -878,12 +1060,18 @@ document.addEventListener('DOMContentLoaded', () => {
       initPartyGames();
     } else if (requestedScene === 5) {
       if (revealParam === 'true') {
+        if (decryptPromptCard) decryptPromptCard.style.display = 'none';
+        if (teaserBox) teaserBox.style.display = 'none';
         if (decryptProgress) decryptProgress.style.width = '99%';
         if (progressStatus) progressStatus.textContent = 'CRITICAL SYSTEM OVERLOAD! (99%)';
         if (error404Banner) error404Banner.classList.add('show');
         if (grandReveal) grandReveal.classList.add('show');
-      } else {
+      } else if (stateParam === 'decrypting') {
+        if (decryptPromptCard) decryptPromptCard.style.display = 'none';
+        if (teaserBox) teaserBox.style.display = 'block';
         startHackerDecryption();
+      } else {
+        initScene5();
       }
     }
   }
